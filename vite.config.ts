@@ -4,6 +4,7 @@ import { VitePWA } from 'vite-plugin-pwa'
 
 // https://vite.dev/config/
 export default defineConfig({
+  base: '/MyFinance/',
   plugins: [
     react(),
     VitePWA({
@@ -15,15 +16,15 @@ export default defineConfig({
         theme_color: '#007aff',
         background_color: '#f2f2f7',
         display: 'standalone',
-        start_url: '/',
+        start_url: '/MyFinance/',
         icons: [
           {
-            src: '/icons/pwa-192x192.png',
+            src: 'icons/pwa-192x192.png',
             sizes: '192x192',
             type: 'image/png',
           },
           {
-            src: '/icons/pwa-512x512.png',
+            src: 'icons/pwa-512x512.png',
             sizes: '512x512',
             type: 'image/png',
           },
