@@ -1,14 +1,25 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import type { FormEvent } from 'react'
 import type { Note, NoteInput, NoteType } from '../types/note'
 
 interface NoteFormProps {
   initialNote?: Note
+  categories: string[]
   onSubmit: (input: NoteInput) => void
   onCancel?: () => void
 }
 
-export function NoteForm({ initialNote, onSubmit, onCancel }: NoteFormProps) {
+interface FormErrors {
+  value?: string
+  description?: string
+}
+
+export function NoteForm({
+  initialNote,
+  categories,
+  onSubmit,
+  onCancel,
+}: NoteFormProps) {
   const [type, setType] = useState<NoteType>(initialNote?.type ?? 'despesa')
   const [value, setValue] = useState(
     initialNote ? String(initialNote.value) : '',
@@ -17,13 +28,29 @@ export function NoteForm({ initialNote, onSubmit, onCancel }: NoteFormProps) {
     initialNote?.description ?? '',
   )
   const [category, setCategory] = useState(initialNote?.category ?? '')
+  const [errors, setErrors] = useState<FormErrors>({})
+  const [showSuggestions, setShowSuggestions] = useState(false)
+  const hideSuggestionsTimeout = useRef<ReturnType<typeof setTimeout>>(undefined)
+
+  const suggestions = categories.filter(
+    (option) =>
+      option.toLowerCase() !== category.trim().toLowerCase() &&
+      option.toLowerCase().includes(category.trim().toLowerCase()),
+  )
 
   function handleSubmit(event: FormEvent) {
     event.preventDefault()
 
     const numericValue = Number(value)
-    if (!numericValue || numericValue <= 0) return
-    if (!description.trim()) return
+    const newErrors: FormErrors = {}
+    if (!numericValue || numericValue <= 0) {
+      newErrors.value = 'Informe um valor maior que zero.'
+    }
+    if (!description.trim()) {
+      newErrors.description = 'Informe uma descrição.'
+    }
+    setErrors(newErrors)
+    if (Object.keys(newErrors).length > 0) return
 
     onSubmit({
       type,
@@ -79,25 +106,58 @@ export function NoteForm({ initialNote, onSubmit, onCancel }: NoteFormProps) {
             placeholder="0,00"
             value={value}
             onChange={(event) => setValue(event.target.value)}
-            required
           />
         </div>
+        {errors.value && <p className="field-error">{errors.value}</p>}
+
         <div className="field-row">
           <input
             type="text"
             placeholder="Descrição"
             value={description}
             onChange={(event) => setDescription(event.target.value)}
-            required
           />
         </div>
-        <div className="field-row">
+        {errors.description && (
+          <p className="field-error">{errors.description}</p>
+        )}
+
+        <div className="field-row category-field">
           <input
             type="text"
             placeholder="Categoria"
+            autoComplete="off"
             value={category}
             onChange={(event) => setCategory(event.target.value)}
+            onFocus={() => {
+              clearTimeout(hideSuggestionsTimeout.current)
+              setShowSuggestions(true)
+            }}
+            onBlur={() => {
+              hideSuggestionsTimeout.current = setTimeout(
+                () => setShowSuggestions(false),
+                100,
+              )
+            }}
           />
+          {showSuggestions && suggestions.length > 0 && (
+            <ul className="category-suggestions">
+              {suggestions.map((option) => (
+                <li key={option}>
+                  <button
+                    type="button"
+                    onMouseDown={(event) => event.preventDefault()}
+                    onClick={() => {
+                      setCategory(option)
+                      setShowSuggestions(false)
+                    }}
+                  >
+                    {option}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
       </div>
 

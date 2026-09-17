@@ -14,10 +14,11 @@ Cada nota tem:
 
 ## Regras
 
-- **Total geral**: soma de receitas menos soma de despesas, sempre recalculado. Lista única e contínua, sem agrupamento por mês.
-- **Ordenação**: cronológica.
-- **Edição e exclusão**: qualquer nota pode ser editada ou excluída; o total se ajusta automaticamente.
-- **Categoria**: apenas metadado de organização, não afeta o cálculo do total.
+- **Total geral**: soma de receitas menos soma de despesas, sempre recalculado, desde a primeira nota até a mais recente — não existe "fechamento de mês".
+- **Ordenação**: cronológica. Na lista, as notas são apresentadas agrupadas visualmente por mês (com um subtotal do período em cada grupo), mas isso é só apresentação — o Total continua sendo o acumulado geral.
+- **Edição e exclusão**: qualquer nota pode ser editada ou excluída (com confirmação antes de excluir); o total se ajusta automaticamente.
+- **Categoria**: apenas metadado de organização, não afeta o cálculo do total. Categorias já usadas são sugeridas por autocompletar ao criar uma nova nota.
+- **Backup**: como os dados vivem só no navegador (`localStorage`), o usuário pode exportar um arquivo `.json` com todas as notas e reimportá-lo depois (substituindo as notas atuais).
 
 ## Fluxo de uso
 
@@ -30,8 +31,9 @@ Cada nota tem:
 
 - Stack técnica, persistência, PWA (service worker/manifest).
 - Design visual.
-- Agrupamento por período, relatórios, totais por categoria.
+- Relatórios e totais por categoria.
 - Múltiplos usuários, sync em nuvem, backend.
+- Merge inteligente de backups (import sempre substitui tudo).
 
 ## Próximos passos
 

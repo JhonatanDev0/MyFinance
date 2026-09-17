@@ -34,10 +34,29 @@ export function useNotes() {
     setNotes((prev) => prev.filter((note) => note.id !== id))
   }
 
+  function replaceNotes(newNotes: Note[]) {
+    setNotes(newNotes)
+  }
+
   const sortedNotes = useMemo(
     () => [...notes].sort((a, b) => b.createdAt - a.createdAt),
     [notes],
   )
 
-  return { notes: sortedNotes, total, addNote, updateNote, removeNote }
+  const categories = useMemo(() => {
+    const distinct = new Set(
+      notes.map((note) => note.category).filter((category) => category !== ''),
+    )
+    return Array.from(distinct).sort((a, b) => a.localeCompare(b, 'pt-BR'))
+  }, [notes])
+
+  return {
+    notes: sortedNotes,
+    total,
+    categories,
+    addNote,
+    updateNote,
+    removeNote,
+    replaceNotes,
+  }
 }
