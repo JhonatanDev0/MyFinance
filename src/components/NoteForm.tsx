@@ -70,9 +70,8 @@ export function NoteForm({
   return (
     <form className="note-form" onSubmit={handleSubmit}>
       <div className="segmented-control">
-        <label
-          className={`segmented-control__option ${type === 'receita' ? 'active' : ''}`}
-        >
+        <div className={`segmented-control__thumb ${type}`} aria-hidden="true" />
+        <label className="segmented-control__option">
           <input
             type="radio"
             name="type"
@@ -82,9 +81,7 @@ export function NoteForm({
           />
           Receita
         </label>
-        <label
-          className={`segmented-control__option ${type === 'despesa' ? 'active' : ''}`}
-        >
+        <label className="segmented-control__option">
           <input
             type="radio"
             name="type"

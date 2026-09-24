@@ -1,4 +1,6 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
+
+const CLOSE_DURATION = 150
 
 interface ConfirmDialogProps {
   open: boolean
@@ -20,6 +22,19 @@ export function ConfirmDialog({
   onCancel,
 }: ConfirmDialogProps) {
   const cancelButtonRef = useRef<HTMLButtonElement>(null)
+  const [prevOpen, setPrevOpen] = useState(open)
+  const [closing, setClosing] = useState(false)
+
+  if (open !== prevOpen) {
+    setPrevOpen(open)
+    setClosing(!open)
+  }
+
+  useEffect(() => {
+    if (!closing) return
+    const timeout = setTimeout(() => setClosing(false), CLOSE_DURATION)
+    return () => clearTimeout(timeout)
+  }, [closing])
 
   useEffect(() => {
     if (!open) return
@@ -32,12 +47,15 @@ export function ConfirmDialog({
     return () => document.removeEventListener('keydown', handleKeyDown)
   }, [open, onCancel])
 
-  if (!open) return null
+  if (!open && !closing) return null
 
   return (
-    <div className="modal-overlay" onClick={onCancel}>
+    <div
+      className={`modal-overlay ${closing ? 'closing' : ''}`}
+      onClick={onCancel}
+    >
       <div
-        className="modal-card"
+        className={`modal-card ${closing ? 'closing' : ''}`}
         role="alertdialog"
         aria-modal="true"
         aria-labelledby="modal-title"
