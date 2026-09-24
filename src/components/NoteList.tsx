@@ -52,7 +52,15 @@ export function NoteList({ notes, onEdit, onRemove }: NoteListProps) {
       <section className="section">
         <p className="section-label">Notas</p>
         <div className="card">
-          <p className="empty-state">Nenhuma nota ainda.</p>
+          <div className="empty-state">
+            <span className="empty-state__icon" aria-hidden="true">
+              📝
+            </span>
+            <p className="empty-state__title">Nenhuma nota ainda</p>
+            <p className="empty-state__subtitle">
+              Adicione uma receita ou despesa para começar.
+            </p>
+          </div>
         </div>
       </section>
     )

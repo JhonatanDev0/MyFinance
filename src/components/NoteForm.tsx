@@ -101,6 +101,7 @@ export function NoteForm({
           <span className="field-row__prefix">R$</span>
           <input
             type="number"
+            inputMode="decimal"
             min="0.01"
             step="0.01"
             placeholder="0,00"

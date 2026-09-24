@@ -49,7 +49,7 @@ body {
 }
 
 .page {
-  padding: 12px 16px 48px;
+  padding: 12px 16px calc(48px + env(safe-area-inset-bottom));
 }
 
 .large-title {
@@ -92,9 +92,27 @@ body {
 }
 
 .empty-state {
-  padding: 20px 16px;
+  padding: 32px 16px;
   color: var(--color-text-secondary);
   text-align: center;
+}
+
+.empty-state__icon {
+  font-size: 32px;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.empty-state__title {
+  margin: 0 0 4px;
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.empty-state__subtitle {
+  margin: 0;
+  font-size: 13px;
 }
 
 .btn-primary {
@@ -125,6 +143,21 @@ body {
 
 .btn-text.destructive {
   color: var(--color-negative);
+}
+
+.btn-text:active {
+  opacity: 0.6;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn-primary:active {
+    transform: none;
+  }
 }
 
 .total-card {
@@ -317,11 +350,15 @@ body {
 
 .note-item__actions {
   display: flex;
-  gap: 12px;
+  gap: 4px;
 }
 
 .note-item__actions .btn-text {
   font-size: 13px;
+  min-height: 44px;
+  padding: 0 8px;
+  display: flex;
+  align-items: center;
 }
 
 .field-error {
