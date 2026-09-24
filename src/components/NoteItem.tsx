@@ -18,7 +18,7 @@ export function NoteItem({ note, onEdit, onRemove, onTogglePaid }: NoteItemProps
   const isExpense = note.type === 'despesa'
 
   return (
-    <div className="list-row">
+    <div className={`list-row ${note.paid ? 'paid' : ''}`}>
       {isExpense ? (
         <button
           type="button"
@@ -48,21 +48,20 @@ export function NoteItem({ note, onEdit, onRemove, onTogglePaid }: NoteItemProps
         <div className="note-item__checkbox-spacer" aria-hidden="true" />
       )}
       <div className="note-item__main">
-        <p
-          className={`note-item__description ${note.paid ? 'paid' : ''}`}
-        >
-          {note.description}
-        </p>
+        <p className="note-item__description">{note.description}</p>
         <p className="note-item__meta">
-          {note.category ? `${note.category} · ` : ''}
-          {date}
+          {note.category && (
+            <span className="note-item__category">{note.category}</span>
+          )}
+          <span>{date}</span>
         </p>
       </div>
       <div className="note-item__side">
         <span
           className={`note-item__value ${isPositive ? 'positive' : 'negative'}`}
         >
-          {sign} {formattedValue}
+          {sign}
+          {formattedValue}
         </span>
         <div className="note-item__actions">
           <button type="button" className="btn-text" onClick={() => onEdit(note)}>
