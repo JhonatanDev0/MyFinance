@@ -24,10 +24,26 @@ export function ConfirmDialog({
   const cancelButtonRef = useRef<HTMLButtonElement>(null)
   const [prevOpen, setPrevOpen] = useState(open)
   const [closing, setClosing] = useState(false)
+  const [content, setContent] = useState({
+    title,
+    message,
+    confirmLabel,
+    destructive,
+  })
 
   if (open !== prevOpen) {
     setPrevOpen(open)
     setClosing(!open)
+  }
+
+  if (
+    open &&
+    (content.title !== title ||
+      content.message !== message ||
+      content.confirmLabel !== confirmLabel ||
+      content.destructive !== destructive)
+  ) {
+    setContent({ title, message, confirmLabel, destructive })
   }
 
   useEffect(() => {
@@ -63,10 +79,10 @@ export function ConfirmDialog({
         onClick={(event) => event.stopPropagation()}
       >
         <p className="modal-title" id="modal-title">
-          {title}
+          {content.title}
         </p>
         <p className="modal-message" id="modal-message">
-          {message}
+          {content.message}
         </p>
         <div className="modal-actions">
           <button
@@ -79,10 +95,10 @@ export function ConfirmDialog({
           </button>
           <button
             type="button"
-            className={`btn-text ${destructive ? 'destructive' : ''}`}
+            className={`btn-text ${content.destructive ? 'destructive' : ''}`}
             onClick={onConfirm}
           >
-            {confirmLabel}
+            {content.confirmLabel}
           </button>
         </div>
       </div>
