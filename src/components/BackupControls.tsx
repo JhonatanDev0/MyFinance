@@ -46,11 +46,16 @@ export function BackupControls({ notes, onRequestImport }: BackupControlsProps) 
 
     try {
       const parsed = JSON.parse(await file.text())
-      if (!Array.isArray(parsed) || !parsed.every(isNote)) {
+      if (!Array.isArray(parsed)) {
         window.alert('Arquivo de backup inválido.')
         return
       }
-      onRequestImport(parsed)
+      const normalized = parsed.map((note) => ({ paid: false, ...note }))
+      if (!normalized.every(isNote)) {
+        window.alert('Arquivo de backup inválido.')
+        return
+      }
+      onRequestImport(normalized)
     } catch {
       window.alert('Não foi possível ler o arquivo de backup.')
     }

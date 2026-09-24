@@ -16,8 +16,16 @@ interface ConfirmState {
 }
 
 function App() {
-  const { notes, total, categories, addNote, updateNote, removeNote, replaceNotes } =
-    useNotes()
+  const {
+    notes,
+    total,
+    categories,
+    addNote,
+    updateNote,
+    removeNote,
+    replaceNotes,
+    togglePaid,
+  } = useNotes()
   const [editingNote, setEditingNote] = useState<Note | null>(null)
   const [confirmState, setConfirmState] = useState<ConfirmState | null>(null)
 
@@ -82,7 +90,12 @@ function App() {
         />
       </section>
 
-      <NoteList notes={notes} onEdit={setEditingNote} onRemove={handleRemove} />
+      <NoteList
+        notes={notes}
+        onEdit={setEditingNote}
+        onRemove={handleRemove}
+        onTogglePaid={togglePaid}
+      />
 
       <section className="section">
         <p className="section-label">Backup</p>

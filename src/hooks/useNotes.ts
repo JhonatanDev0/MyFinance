@@ -20,6 +20,7 @@ export function useNotes() {
       ...input,
       id: crypto.randomUUID(),
       createdAt: Date.now(),
+      paid: false,
     }
     setNotes((prev) => [note, ...prev])
   }
@@ -32,6 +33,12 @@ export function useNotes() {
 
   function removeNote(id: string) {
     setNotes((prev) => prev.filter((note) => note.id !== id))
+  }
+
+  function togglePaid(id: string) {
+    setNotes((prev) =>
+      prev.map((note) => (note.id === id ? { ...note, paid: !note.paid } : note)),
+    )
   }
 
   function replaceNotes(newNotes: Note[]) {
@@ -58,5 +65,6 @@ export function useNotes() {
     updateNote,
     removeNote,
     replaceNotes,
+    togglePaid,
   }
 }

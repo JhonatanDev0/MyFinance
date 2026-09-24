@@ -7,6 +7,7 @@ export interface Note {
   description: string
   category: string
   createdAt: number
+  paid: boolean
 }
 
-export type NoteInput = Omit<Note, 'id' | 'createdAt'>
+export type NoteInput = Omit<Note, 'id' | 'createdAt' | 'paid'>

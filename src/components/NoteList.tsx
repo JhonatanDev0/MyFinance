@@ -5,6 +5,7 @@ interface NoteListProps {
   notes: Note[]
   onEdit: (note: Note) => void
   onRemove: (id: string) => void
+  onTogglePaid: (id: string) => void
 }
 
 interface MonthGroup {
@@ -46,7 +47,7 @@ function groupByMonth(notes: Note[]): MonthGroup[] {
   return groups
 }
 
-export function NoteList({ notes, onEdit, onRemove }: NoteListProps) {
+export function NoteList({ notes, onEdit, onRemove, onTogglePaid }: NoteListProps) {
   if (notes.length === 0) {
     return (
       <section className="section">
@@ -93,6 +94,7 @@ export function NoteList({ notes, onEdit, onRemove }: NoteListProps) {
                   note={note}
                   onEdit={onEdit}
                   onRemove={onRemove}
+                  onTogglePaid={onTogglePaid}
                 />
               ))}
             </div>

@@ -8,7 +8,8 @@ export function loadNotes(): Note[] {
 
   try {
     const parsed = JSON.parse(raw)
-    return Array.isArray(parsed) ? parsed : []
+    if (!Array.isArray(parsed)) return []
+    return parsed.map((note) => ({ paid: false, ...note }))
   } catch {
     return []
   }
